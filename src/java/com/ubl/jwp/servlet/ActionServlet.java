@@ -1,5 +1,6 @@
 package com.ubl.jwp.servlet;
 
+import com.ubl.jwp.service.UserService;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,18 +19,20 @@ import javax.servlet.http.HttpSession;
  */
 public class ActionServlet extends HttpServlet {
 
+    private UserService service = new UserService();
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // tangkap username dan password
-        String nama = request.getParameter("nama");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
         
         // misalkan berhasil, maka forward ke halaman admin kemudian berikan session
-        if(nama.equals("admin") && password.equals("admin")) {
+        if(service.login(username, password) > 0) {
             HttpSession session = request.getSession();
-            session.setAttribute("nama", nama); // set session dengan parameter "nama"
+            session.setAttribute("username", username); // set session dengan parameter "username"
             
-            response.sendRedirect("admin/registrasi.jsp");  
+            response.sendRedirect("admin/RegistrasiServlet");  
         } else {
             // gagal login, arahkan ke index.jsp
             response.sendRedirect("index.jsp?error=fail");  

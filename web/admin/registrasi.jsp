@@ -55,6 +55,18 @@
                     <legend>Registrasi</legend>
                     
                     <div class="form-group">
+                        <label class="col-md-4 control-label" for="textinput">Username</label>  
+                        <div class="col-md-4">
+                            <input id="nama" name="username" placeholder="Username Anda" class="form-control input-md" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="textinput">Password</label>  
+                        <div class="col-md-4">
+                            <input id="nama" name="password" placeholder="Password Anda" class="form-control input-md" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-4 control-label" for="textinput">Nama</label>  
                         <div class="col-md-4">
                             <input id="nama" name="nama" placeholder="Nama Anda" class="form-control input-md" type="text">
@@ -74,22 +86,30 @@
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
+                        <th>Id</th>
+                        <th>Username</th>
+                        <th>Password</th>
                         <th>Nama</th>
                     </tr>
                 </thead>
                 <tbody id="isiTable">
                     <% 
-                        String[] data = (String[])session.getAttribute("data");
-                        
-                        if(data == null)
-                            data = new String[0];
-                        
+                        String[][] data = (String[][])request.getAttribute("data");
                         for(int i = 0; i < data.length; i++) {                                                    
                     %>
                     
                     <tr>
                         <td>
-                            <%= data[i] %>
+                            <%= data[i][0] %>
+                        </td>
+                        <td>
+                            <%= data[i][1] %>
+                        </td>
+                        <td>
+                            <%= data[i][2] %>
+                        </td>
+                        <td>
+                            <%= data[i][3] %>
                         </td>
                     </tr>
                     

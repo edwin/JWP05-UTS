@@ -5,6 +5,7 @@
  */
 package com.ubl.jwp.servlet;
 
+import com.ubl.jwp.service.UserService;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,35 +19,28 @@ import javax.servlet.http.HttpSession;
  */
 public class RegistrasiServlet extends HttpServlet {
 
-    // harusnya menggunakan database, namun sementara pakai array dulu ya
-    private String[] data = {"Nama 1", "Nama 2", "Nama 3"};
+    private UserService service = new UserService();
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
         String nama = request.getParameter("nama");
         
-        // ambil array dari session
-        HttpSession session = request.getSession();
-        String dataHasilSessions[] = (String[]) session.getAttribute("data");
+        service.saveUser(username, password, nama);
         
-        // create array baru
-        if(dataHasilSessions == null)
-            dataHasilSessions = new String[0];
-        String a[] = new String[dataHasilSessions.length+1];
+        response.sendRedirect("/JWP05UTS/admin/RegistrasiServlet");
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         
-        // copy isi array session ke array baru
-        for (int i = 0; i < dataHasilSessions.length; i++) {
-            a[i] = dataHasilSessions[i];
-        }
-        
-        // masukkan data terakhir ke array paling belakang
-        a[dataHasilSessions.length] = nama;
-        
-        // terakhir masukkan aray baru ke session
-        session.setAttribute("data", a);
-        
-        response.sendRedirect("/JWP05UTS/admin/registrasi.jsp");
+        request.setAttribute("data", service.getUsers());
+
+        // forward content ke template
+        getServletContext().getRequestDispatcher("/admin/registrasi.jsp").forward(request, response);
     }
 }

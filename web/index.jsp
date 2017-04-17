@@ -37,7 +37,7 @@
                 <% } %>
                 
                 <h2 class="form-signin-heading">Please login</h2> <br />
-                <input type="text" class="form-control" name="nama" placeholder="Nama Anda" required="" autofocus="" /> 
+                <input type="text" class="form-control" name="username" placeholder="Username Anda" required="" autofocus="" /> 
                 <input type="password" class="form-control" name="password" placeholder="Password Anda" required=""/> 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>   
             </form>

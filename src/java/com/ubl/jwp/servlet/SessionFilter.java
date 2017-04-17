@@ -30,7 +30,7 @@ public class SessionFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
         
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("nama") == null) {
+        if (session == null || session.getAttribute("username") == null) {
             response.sendRedirect("/JWP05UTS/index.jsp?error=login");
         }
 
