@@ -71,22 +71,118 @@ public class UserService {
             return data;
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if(connect != null)
+                    connect.close();    
+                if(preparedStatement != null)
+                    preparedStatement.close();    
+                if(resultSet != null)
+                    resultSet.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         
         return new String[][]{};
     }
     
-    public void saveUser(String username, String password, String nama) {
+    public String[] getUser(int id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connect = DriverManager.getConnection("jdbc:mysql://localhost/kampus?", "root", "");
-            preparedStatement = connect.prepareStatement("insert into tbl_user values (null, ?, md5(?), ?)");
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, nama);
+            
+            String[] data = new String[4];
+            preparedStatement = connect.prepareStatement("select * from tbl_user where id = ?");
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()){
+                data[0] = resultSet.getString("id");
+                data[1] = resultSet.getString("username");
+                data[2] = resultSet.getString("password");
+                data[3] = resultSet.getString("nama");
+            }
+            
+            return data;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(connect != null)
+                    connect.close();    
+                if(preparedStatement != null)
+                    preparedStatement.close();    
+                if(resultSet != null)
+                    resultSet.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return new String[]{};
+    }
+    
+    public void deleteUser(int id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/kampus?", "root", "");
+            
+            String[] data = new String[4];
+            preparedStatement = connect.prepareStatement("delete from tbl_user where id = ?");
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if(connect != null)
+                    connect.close();    
+                if(preparedStatement != null)
+                    preparedStatement.close();    
+                if(resultSet != null)
+                    resultSet.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void saveUser(String id, String username, String password, String nama) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/kampus?", "root", "");
+            
+            // insert ketika tidak punya id
+            if(id == null || id.trim().isEmpty()) {
+                preparedStatement = connect.prepareStatement("insert into tbl_user values (null, ?, md5(?), ?)");
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+                preparedStatement.setString(3, nama);
+                preparedStatement.executeUpdate();
+            } else { // update ketika punya id
+                preparedStatement = connect.prepareStatement("update tbl_user set username = ?, `password`=md5(?), nama=? where id = ?");
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+                preparedStatement.setString(3, nama);
+                preparedStatement.setInt(4, Integer.parseInt(id));
+                preparedStatement.executeUpdate();
+            }
+            
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(connect != null)
+                    connect.close();    
+                if(preparedStatement != null)
+                    preparedStatement.close();    
+                if(resultSet != null)
+                    resultSet.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

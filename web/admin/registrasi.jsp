@@ -57,7 +57,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="textinput">Username</label>  
                         <div class="col-md-4">
-                            <input id="nama" name="username" placeholder="Username Anda" class="form-control input-md" type="text">
+                            <input id="hidden1" name="id" type="hidden" value="<%= request.getAttribute("id") == null?"":request.getAttribute("id") %>">
+                            <input id="nama" name="username" placeholder="Username Anda" class="form-control input-md" type="text" value="<%= request.getAttribute("username") == null?"":request.getAttribute("username") %>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -69,7 +70,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="textinput">Nama</label>  
                         <div class="col-md-4">
-                            <input id="nama" name="nama" placeholder="Nama Anda" class="form-control input-md" type="text">
+                            <input id="nama" name="nama" placeholder="Nama Anda" class="form-control input-md" type="text" value="<%= request.getAttribute("nama") == null?"":request.getAttribute("nama") %>">
                         </div>
                     </div>
 
@@ -90,6 +91,8 @@
                         <th>Username</th>
                         <th>Password</th>
                         <th>Nama</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="isiTable">
@@ -110,6 +113,12 @@
                         </td>
                         <td>
                             <%= data[i][3] %>
+                        </td>
+                        <td>
+                            <a href="/JWP05UTS/admin/RegistrasiServlet?id=<%=data[i][0]%>">Edit</a>
+                        </td>
+                        <td>
+                            <a href="/JWP05UTS/admin/RegistrasiServlet?hapus=<%=data[i][0]%>">Hapus</a>
                         </td>
                     </tr>
                     

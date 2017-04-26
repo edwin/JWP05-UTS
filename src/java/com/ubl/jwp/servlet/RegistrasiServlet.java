@@ -28,8 +28,9 @@ public class RegistrasiServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String nama = request.getParameter("nama");
+        String id = request.getParameter("id");
         
-        service.saveUser(username, password, nama);
+        service.saveUser(id, username, password, nama);
         
         response.sendRedirect("/JWP05UTS/admin/RegistrasiServlet");
     }
@@ -38,8 +39,23 @@ public class RegistrasiServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        request.setAttribute("data", service.getUsers());
+        // ambil id
+        String id = request.getParameter("id");
+        if(id != null) {
+            String[] user = service.getUser(Integer.parseInt(id));
+            request.setAttribute("id", user[0]);
+            request.setAttribute("username", user[1]);
+            request.setAttribute("nama", user[3]);
+        }
+        
+        // ambil hapus
+        String hapus = request.getParameter("hapus");
+        if(hapus != null) {
+            service.deleteUser(Integer.parseInt(hapus));
+        }
 
+        request.setAttribute("data", service.getUsers());
+        
         // forward content ke template
         getServletContext().getRequestDispatcher("/admin/registrasi.jsp").forward(request, response);
     }
